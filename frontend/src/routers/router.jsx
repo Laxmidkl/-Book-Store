@@ -19,6 +19,9 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import ManageBooks from "../pages/dashboard/manageBooks/ManageBooks";
 import AddBook from "../pages/dashboard/addBook/AddBook";
 import UpdateBook from "../pages/dashboard/addBook/EditBook/UpdateBook";
+import UserLogin from "../components/UserLogin";
+import PasswordInput from "../pages/PasswordInput";
+import UserDashboard from "../pages/dashboard/users/UserDashboard";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,6 +38,10 @@ const router = createBrowserRouter(
           }
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/login/user" element={<UserLogin />} />
+                <Route path="/password" element={<PasswordInput />} />
+
+
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/books/:id" element={<SingleBook />} />
@@ -48,7 +55,7 @@ const router = createBrowserRouter(
           }
         />
 
-        {/* <Route
+        <Route
           path="/user-dashboard"
           element={
             <PrivateRoute>
@@ -56,7 +63,7 @@ const router = createBrowserRouter(
               <UserDashboard/>
             </PrivateRoute>
           }
-        /> */}
+        />
       </Route>
 
       {/* Admin login route (outside layout) */}

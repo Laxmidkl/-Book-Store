@@ -1,109 +1,374 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  HiMiniBars3CenterLeft,
-  HiOutlineHeart,
-  HiOutlineShoppingCart,
-} from "react-icons/hi2";
-import { IoSearchOutline } from "react-icons/io5";
-import { HiOutlineUser } from "react-icons/hi";
+// import React, { useState } from "react";
+// import { Link } from "react-router-dom";
+// import {
+//   HiMiniBars3CenterLeft,
+//   HiOutlineHeart,
+//   HiOutlineShoppingCart,
+// } from "react-icons/hi2";
+// import { IoSearchOutline } from "react-icons/io5";
+// import { HiOutlineUser } from "react-icons/hi";
 
-import avatarImg from "../assets/avatar.png";
+// import avatarImg from "../assets/avatar.png";
+// import Img from "../assets/navLogo.png";
+// import backgroundImage from "../assets/backgroundImg.jpg";
+
+// import { useSelector } from "react-redux";
+// import { useAuth } from "../context/AuthContext";
+
+// const navigation = [
+//   { name: "Dashboard", href: "/dashboard" },
+//   { name: "Orders", href: "/orders" },
+//   { name: "Cart Page", href: "/cart" },
+//   { name: "Check Out", href: "/checkout" },
+// ];
+
+// const Navbar = () => {
+//   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+//   const cartItems = useSelector((state) => state.cart.cartItems);
+//   const { currentUser, logout } = useAuth();
+
+//   // const token = localStorage.getItem("token");
+
+//   const handleLogOut = () => {
+//     logout();
+//   };
+
+//   return (
+//     <header
+//       className="max-w-screen-2xl mx-auto px-10 py-6 h-24 text-white"
+//       style={{ backgroundImage: `url(${backgroundImage})` }}
+//     >
+//       <nav className="flex justify-between items-center">
+//         {/* Left Side */}
+//         <div className="flex items-center gap-4 md:gap-16">
+//           {/* Logo */}
+//           <div className="h-13 w-13 flex items-center justify-center">
+//             <img src={Img} alt="logo" className="rounded-full size-10" />
+//           </div>
+
+//           {/* Nav Links */}
+//           <div className="hidden md:flex gap-15 font-semibold ml-40">
+//             <Link to="/" className="hover:text-primary">
+//               Home
+//             </Link>
+//             <Link to="/about" className="hover:text-primary">
+//               About Us
+//             </Link>
+//             <Link to="/contact" className="hover:text-primary">
+//               Contact Us
+//             </Link>
+//           </div>
+
+//           {/* Search Input */}
+//           <div className="relative sm:w-72 w-40 ml-5">
+//             <IoSearchOutline className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
+//             <input
+//               type="text"
+//               placeholder="Search here"
+//               className="bg-tertiary w-full py-1 md:px-8 px-7 rounded-md outline-none pl-8 pr-2 text-black"
+//             />
+//           </div>
+//         </div>
+
+//         {/* Right Side */}
+//         <div className="relative flex items-center gap-3">
+//           {/* Auth / User Icon */}
+//           <div>
+//             {currentUser ? (
+//               <>
+//                 <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+//                   <img
+//                     src={avatarImg}
+//                     alt="avatar"
+//                     className={`size-7 rounded-full ${
+//                       currentUser ? "ring-2 ring-blue-500" : ""
+//                     }`}
+//                   />
+//                 </button>
+
+//                 {isDropdownOpen && (
+//                   <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-40 text-black">
+//                     <ul className="py-2">
+//                       {navigation.map((item) => (
+//                         <li
+//                           key={item.name}
+//                           onClick={() => setIsDropdownOpen(false)}
+//                         >
+//                           <Link
+//                             to=  
+//                             // {item.href}
+                            
+//                             {
+//                                 item.name === "Dashboard"
+//                                 ? (localStorage.getItem("token") ?  "/admin" : "/dashboard"  )
+//                                 : item.href
+//                             }
+//                             className="block px-4 py-2 text-sm hover:bg-gray-200"
+//                           >
+//                             {item.name}
+//                           </Link>
+//                         </li>
+//                       ))}
+//                       <li>
+//                         <button
+//                           onClick={()=>{
+//                             handleLogOut();
+//                             setIsDropdownOpen(false);
+
+//                           }
+//                         }
+//                           className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+//                         >
+//                           Logout
+//                         </button>
+//                       </li>
+//                     </ul>
+//                   </div>
+//                 )}
+//               </>
+//             ) : (
+//               <Link to="/login">
+//                 <HiOutlineUser className="size-6" />
+//               </Link>
+//             )}
+//           </div>
+
+
+
+//             {/* <div>
+//             {currentUser ? (
+//               <>
+//                 <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+//                   <img
+//                     src={avatarImg}
+//                     alt="avatar"
+//                     className={`size-7 rounded-full ${currentUser ? "ring-2 ring-blue-500" : ""}`}
+//                   />
+//                 </button>
+
+//                 {isDropdownOpen && (
+//                   <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-40 text-black">
+//                     <ul className="py-2">
+//                       {navigation.map((item) => (
+//                         <li
+//                           key={item.name}
+//                           onClick={() => setIsDropdownOpen(false)}
+//                         >
+//                           <Link
+//                             to={
+//                               item.name === "Dashboard"
+//                                 ? (localStorage.getItem("token") ?   "/admin" : "/dashboard"  )
+//                                 : item.href
+//                             }
+//                             className="block px-4 py-2 text-sm hover:bg-gray-200"
+//                           >
+//                             {item.name}
+//                           </Link>
+//                         </li>
+//                       ))}
+//                       <li>
+//                         <button
+//                           onClick={() => {
+//                             handleLogOut();
+//                             setIsDropdownOpen(false);
+//                           }}
+//                           className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+//                         >
+//                           Logout
+//                         </button>
+//                       </li>
+//                     </ul>
+//                   </div>
+//                 )}
+//               </>
+//             ) : (
+//               <Link to="/login">
+//                 <HiOutlineUser className="size-6" />
+//               </Link>
+//             )}
+//           </div> */}
+
+//           {/* Wishlist Icon */}
+//           <button className="hidden sm:block">
+//             <HiOutlineHeart className="size-6" />
+//           </button>
+
+//           {/* Cart Icon */}
+//           <Link
+//             to="/cart"
+//             className="bg-primary p-1 sm:px-6 px-2 flex items-center rounded-sm"
+//           >
+//             <HiOutlineShoppingCart />
+//             <span className="text-sm font-semibold sm:ml-1">
+//               {cartItems.length > 0 ? cartItems.length : 0}
+//             </span>
+//           </Link>
+//         </div>
+//       </nav>
+//     </header>
+//   );
+// };
+
+// export default Navbar;
+
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useAuth } from "../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
+
+import { HiOutlineHeart, HiOutlineShoppingCart } from "react-icons/hi2";
+import { IoSearchOutline } from "react-icons/io5";
 import Img from "../assets/navLogo.png";
 import backgroundImage from "../assets/backgroundImg.jpg";
 
-import { useSelector } from "react-redux";
-import { useAuth } from "../context/AuthContext";
-
-const navigation = [
-  { name: "Dashboard", href: "/dashboard" },
+const userNavigation = [
+  { name: "Dashboard", href: "/user-dashboard" },
   { name: "Orders", href: "/orders" },
-  { name: "Cart Page", href: "/cart" },
-  { name: "Check Out", href: "/checkout" },
+  { name: "Cart", href: "/cart" },
+  { name: "Checkout", href: "/checkout" },
+];
+
+const adminNavigation = [
+  { name: "Dashboard", href: "/dashboard" },
+  { name: "Manage Books", href: "/manage-books" },
+  { name: "Add Book", href: "/add-book" },
 ];
 
 const Navbar = () => {
+  const [query, setQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const cartItems = useSelector((state) => state.cart.cartItems);
+  const [adminData, setAdminData] = useState(null);
+
   const { currentUser, logout } = useAuth();
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const navigate = useNavigate();
 
-  // const token = localStorage.getItem("token");
-
-  const handleLogOut = () => {
-    logout();
+  const getUserInitials = (full = "") => {
+    if (!full) return "";
+    const parts = full.trim().split(" ");
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return parts[0].charAt(0).toUpperCase() + parts[parts.length - 1].charAt(0).toUpperCase();
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        if (decoded?.role === "admin") {
+          setAdminData(decoded);
+        }
+      } catch (err) {
+        console.error("Invalid admin token");
+        localStorage.removeItem("token");
+      }
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    if (adminData) {
+      localStorage.removeItem("token");
+      setAdminData(null);
+      setIsDropdownOpen(false);
+      navigate("/");
+    } else {
+      await logout();
+      setIsDropdownOpen(false);
+      navigate("/login");
+    }
+  };
+
+  const handleSearch = () => {
+    if (!query.trim()) return;
+    alert(`Searching for "${query}" - add your logic!`);
+    setQuery("");
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleSearch();
+  };
+
+  const renderProfile = () => {
+    if (currentUser) {
+      const name = currentUser.fullName || currentUser.displayName || currentUser.email;
+      return {
+        initials: getUserInitials(name),
+        email: currentUser.email,
+        isAdmin: false,
+      };
+    } else if (adminData) {
+      return {
+        initials: getUserInitials(adminData.email),
+        email: adminData.email,
+        isAdmin: true,
+      };
+    }
+    return null;
+  };
+
+  const profile = renderProfile();
+  const isAdmin = profile?.isAdmin;
 
   return (
     <header
       className="max-w-screen-2xl mx-auto px-10 py-6 h-24 text-white"
-      style={{ backgroundImage: `url(${backgroundImage})` }}
+      style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}
     >
-      <nav className="flex justify-between items-center">
-        {/* Left Side */}
-        <div className="flex items-center gap-4 md:gap-16">
-          {/* Logo */}
-          <div className="h-13 w-13 flex items-center justify-center">
-            <img src={Img} alt="logo" className="rounded-full size-10" />
+      <nav className="flex justify-between items-center h-full">
+        <div className="flex items-center gap-6 md:gap-16">
+          <div className="h-14 w-14 flex items-center justify-center">
+            <img src={Img} alt="logo" className="rounded-full object-cover" />
           </div>
 
-          {/* Nav Links */}
-          <div className="hidden md:flex gap-15 font-semibold ml-40">
-            <Link to="/" className="hover:text-primary">
-              Home
-            </Link>
-            <Link to="/about" className="hover:text-primary">
-              About Us
-            </Link>
-            <Link to="/contact" className="hover:text-primary">
-              Contact Us
-            </Link>
+          <div className="hidden md:flex gap-10 font-semibold text-white">
+            <Link to="/" className="hover:text-primary transition-colors duration-200">Home</Link>
+            <Link to="/about" className="hover:text-primary transition-colors duration-200">About Us</Link>
+            <Link to="/contact" className="hover:text-primary transition-colors duration-200">Contact Us</Link>
           </div>
 
-          {/* Search Input */}
-          <div className="relative sm:w-72 w-40 ml-5">
-            <IoSearchOutline className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
+          <div className="relative sm:w-72 w-40 ml-2">
+            <IoSearchOutline
+              onClick={handleSearch}
+              className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-300 cursor-pointer"
+            />
             <input
               type="text"
-              placeholder="Search here"
-              className="bg-tertiary w-full py-1 md:px-8 px-7 rounded-md outline-none pl-8 pr-2 text-black"
+              placeholder="Search books..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="bg-white text-black w-full py-1 md:px-8 px-7 rounded-md outline-none pl-8 pr-2"
             />
           </div>
         </div>
 
-        {/* Right Side */}
-        <div className="relative flex items-center gap-3">
-          {/* Auth / User Icon */}
-          <div>
-            {currentUser ? (
+        <div className="relative flex items-center gap-5 text-white">
+          <div className="relative">
+            {profile ? (
               <>
-                <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                  <img
-                    src={avatarImg}
-                    alt="avatar"
-                    className={`size-7 rounded-full ${
-                      currentUser ? "ring-2 ring-blue-500" : ""
-                    }`}
-                  />
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex flex-col items-center focus:outline-none"
+                  aria-label="User menu"
+                >
+                  <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold select-none">
+                    {profile.initials}
+                  </div>
+                  <span className="text-xs mt-1 lowercase select-text max-w-[120px] truncate text-center">
+                    {profile.email}
+                  </span>
                 </button>
 
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-40 text-black">
-                    <ul className="py-2">
-                      {navigation.map((item) => (
-                        <li
-                          key={item.name}
-                          onClick={() => setIsDropdownOpen(false)}
-                        >
+                  <div className="absolute right-0 mt-3 w-48 bg-white rounded-md shadow-lg text-black z-50">
+                    <ul>
+                      {(isAdmin ? adminNavigation : userNavigation).map((item) => (
+                        <li key={item.name}>
                           <Link
-                            to=  
-                            // {item.href}
-                            
-                            {
-                                item.name === "Dashboard"
-                                ? (localStorage.getItem("token") ?  "/admin" : "/dashboard"  )
-                                : item.href
-                            }
-                            className="block px-4 py-2 text-sm hover:bg-gray-200"
+                            to={item.href}
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="block px-4 py-2 hover:bg-gray-200"
                           >
                             {item.name}
                           </Link>
@@ -111,13 +376,8 @@ const Navbar = () => {
                       ))}
                       <li>
                         <button
-                          onClick={()=>{
-                            handleLogOut();
-                            setIsDropdownOpen(false);
-
-                          }
-                        }
-                          className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                          onClick={handleLogout}
+                          className="w-full text-left px-4 py-2 hover:bg-gray-200"
                         >
                           Logout
                         </button>
@@ -127,81 +387,32 @@ const Navbar = () => {
                 )}
               </>
             ) : (
-              <Link to="/login">
-                <HiOutlineUser className="size-6" />
-              </Link>
+              <>
+                <Link to="/login" className="text-white font-semibold hover:text-primary transition-colors duration-200">
+                  Login
+                </Link>
+                <Link to="/register" className="ml-4 text-white font-semibold hover:text-primary transition-colors duration-200">
+                  Register
+                </Link>
+              </>
             )}
           </div>
 
-
-
-            {/* <div>
-            {currentUser ? (
-              <>
-                <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                  <img
-                    src={avatarImg}
-                    alt="avatar"
-                    className={`size-7 rounded-full ${currentUser ? "ring-2 ring-blue-500" : ""}`}
-                  />
-                </button>
-
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-40 text-black">
-                    <ul className="py-2">
-                      {navigation.map((item) => (
-                        <li
-                          key={item.name}
-                          onClick={() => setIsDropdownOpen(false)}
-                        >
-                          <Link
-                            to={
-                              item.name === "Dashboard"
-                                ? (localStorage.getItem("token") ?   "/admin" : "/dashboard"  )
-                                : item.href
-                            }
-                            className="block px-4 py-2 text-sm hover:bg-gray-200"
-                          >
-                            {item.name}
-                          </Link>
-                        </li>
-                      ))}
-                      <li>
-                        <button
-                          onClick={() => {
-                            handleLogOut();
-                            setIsDropdownOpen(false);
-                          }}
-                          className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                        >
-                          Logout
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </>
-            ) : (
-              <Link to="/login">
-                <HiOutlineUser className="size-6" />
-              </Link>
-            )}
-          </div> */}
-
-          {/* Wishlist Icon */}
-          <button className="hidden sm:block">
-            <HiOutlineHeart className="size-6" />
+          <button title="Wishlist" className="hidden sm:block hover:text-primary transition-colors duration-200" aria-label="Wishlist">
+            <HiOutlineHeart className="w-6 h-6" />
           </button>
 
-          {/* Cart Icon */}
           <Link
             to="/cart"
-            className="bg-primary p-1 sm:px-6 px-2 flex items-center rounded-sm"
+            className="bg-primary p-2 flex items-center rounded-md hover:bg-blue-700 transition-colors duration-200 relative"
+            aria-label="Cart"
           >
-            <HiOutlineShoppingCart />
-            <span className="text-sm font-semibold sm:ml-1">
-              {cartItems.length > 0 ? cartItems.length : 0}
-            </span>
+            <HiOutlineShoppingCart className="w-6 h-6" />
+            {cartItems.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-1.5">
+                {cartItems.length}
+              </span>
+            )}
           </Link>
         </div>
       </nav>

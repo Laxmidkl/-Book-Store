@@ -7,9 +7,9 @@ const router =  express.Router();
 const JWT_SECRET = process.env.JWT_SECRET_KEY
 
 router.post("/admin", async (req, res) => {
-    const {username, password} = req.body;
+    const {email, password} = req.body;
     try {
-        const admin =  await User.findOne({username});
+        const admin =  await User.findOne({email});
         if(!admin) {
             res.status(404).send({message: "Admin not found!"})
         }
@@ -18,7 +18,7 @@ router.post("/admin", async (req, res) => {
         }
         
         const token =  jwt.sign(
-            {id: admin._id, username: admin.username, role: admin.role}, 
+            {id: admin._id, email: admin.email, role: admin.role}, 
             JWT_SECRET,
             {expiresIn: '7d'}
         )
@@ -27,7 +27,7 @@ router.post("/admin", async (req, res) => {
             message: "Authentication successful",
             token: token,
             user: {
-                username: admin.username,
+                email: admin.email,
                 role: admin.role
             }
         })
