@@ -51,9 +51,10 @@ const booksApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ["Books"]
-        })
+        }),
+
     })
 })
 
-export const {useFetchAllBooksQuery, useFetchBookByIdQuery, useAddBookMutation, useUpdateBookMutation, useDeleteBookMutation} = booksApi;
+export const {useFetchAllBooksQuery, useFetchBookByIdQuery, useAddBookMutation, useUpdateBookMutation, useDeleteBookMutation,  useSearchBooksQuery} = booksApi;
 export default booksApi;

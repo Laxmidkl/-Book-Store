@@ -30,7 +30,7 @@ const book = data?.book;
 
 
   return (
-    <div className="max-w-sm shadow-md p-5 m-auto">
+    <div className="max-w-sm shadow-md p-5 m-auto h-full">
             <h1 className="text-2xl font-bold mb-6">{book.title}</h1>
 
             <div className=''>
@@ -64,6 +64,7 @@ const book = data?.book;
                         <strong>Category:</strong> {book?.category}
                     </p>
                     <p className="text-gray-700"><strong>Description:</strong> {book.description}</p>
+                    <p className="text-gray-700"><strong>Total price:</strong>  Rs. {book?.newPrice}</p>
                 </div>
 
                 <button onClick={() => handleAddToCart(book)} className="btn-primary px-6 space-x-1 flex items-center gap-1 ">

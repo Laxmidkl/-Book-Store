@@ -4,6 +4,9 @@ const Book = require('./book.model');
 const { postABook, getAllBooks, getSingleBook, updatedBook, deleteABook} = require('./book.controller');
 const verifyAdminToken = require('../middleware/verifyAdminToken');
 
+// const { searchBooks } = require('./book.controller');
+// const { getSimilarBooks } = require('./book.controller');
+
 
 
 router.post("/create-book",verifyAdminToken, postABook)
@@ -18,6 +21,11 @@ router.get("/:id", getSingleBook);
 router.put("/edit/:id",verifyAdminToken,  updatedBook);
   
 router.delete("/:id",verifyAdminToken, deleteABook)
+  
+// router.get("/search/query", searchBooks); // <-- Add this line
+
+ 
+// router.get('/similar/:bookId', getSimilarBooks);  // <-- Add this route for similar books
 
 
 module.exports = router;

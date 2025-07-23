@@ -1,6 +1,6 @@
 
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BookCard from '../books/BookCard';
 
 // Import Swiper React components
@@ -9,11 +9,15 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // import required modules
 import { Pagination, Navigation } from 'swiper/modules';
 
+
+
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useFetchAllBooksQuery } from '../../redux/features/books/booksApi';
+import { query } from 'firebase/firestore';
+import { IoSearchOutline } from 'react-icons/io5';
 
 const categories = ["Choose a genre", "Business", "Fiction", "Horror", "Adventure"]
 
@@ -28,6 +32,7 @@ const TopSellers = () => {
     const filteredBooks = selectedCategory === "Choose a genre"
         ? books
         : books.filter(book => book.category === selectedCategory.toLowerCase());
+
 
     return (
         <div className='py-10 px-10'>
@@ -49,6 +54,9 @@ const TopSellers = () => {
                     }
                 </select>
             </div>
+
+            
+
 
             <Swiper
                 slidesPerView={1}

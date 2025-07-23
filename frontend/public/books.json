@@ -74,7 +74,7 @@
       "title": "The Hunger Games",
       "description": "Could you survive on your own in the wild, with every one out to make sure you don't live to see the morning?",
       "category": "fiction",
-      "trending": true,
+      "trending": false,
       "coverImage": "book-8.png",
       "oldPrice": 21.99,
       "newPrice": 16.99

@@ -22,6 +22,7 @@ import UpdateBook from "../pages/dashboard/addBook/EditBook/UpdateBook";
 import UserLogin from "../components/UserLogin";
 import PasswordInput from "../pages/PasswordInput";
 import UserDashboard from "../pages/dashboard/users/UserDashboard";
+// import Search from "../pages/Search";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,11 +41,13 @@ const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/login/user" element={<UserLogin />} />
                 <Route path="/password" element={<PasswordInput />} />
+{/* <Route path="/search" element={<Search />} /> */}
 
 
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/books/:id" element={<SingleBook />} />
+                <Route path="/books/:id" element={<SingleBook />} />
+
         <Route
           path="/checkout"
           element={
