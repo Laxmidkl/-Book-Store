@@ -1,12 +1,27 @@
+
+
 const express = require('express');
-const { createAOrder, getOrderByEmail } = require('./order.controller');
+const router = express.Router();
+const verifyAdminToken = require('../middleware/verifyAdminToken');
+const { 
+  createAOrder, 
+  completeEsewaOrder, 
+  getOrderByEmail, 
+  deleteOrder,
+  getAllOrders,
+  updateOrderStatus ,getOrderById
+} = require('./order.controller');
 
-const router =  express.Router();
+// Order routes
+router.post('/', createAOrder);
+router.post('/esewa', completeEsewaOrder);
+router.get('/email/:email', getOrderByEmail);
+router.delete('/:id', deleteOrder);
+router.get('/', getAllOrders);
+router.patch('/:id/status', verifyAdminToken, updateOrderStatus);
 
-// create order endpoint
-router.post("/", createAOrder);
 
-// get orders by user email 
-router.get("/email/:email", getOrderByEmail);
+router.get('/:id', getOrderById); // GET /api/orders/:id
+
 
 module.exports = router;

@@ -12,17 +12,19 @@ import backgroundImage from "../assets/backgroundImg.jpg";
 import axios from "axios"; // optional, can use fetch too
 
 const userNavigation = [
+  { name: "My Profile", href: "/profile" },
   { name: "Dashboard", href: "/user-dashboard" },
-  { name: "Orders", href: "/orders" },
-  { name: "Cart", href: "/cart" },
-  { name: "Checkout", href: "/checkout" },
 ];
 
 const adminNavigation = [
+  // { name: "My Profile", href: "/profile" },
   { name: "Dashboard", href: "/dashboard" },
-  { name: "Manage Books", href: "/manage-books" },
-  { name: "Add Book", href: "/add-book" },
+  { name: "View Orders", href: "/orders" },
+  { name: "Manage Books", href: "/dashboard/manage-books" },
+  // { name: "Manage u", href: "/manage-" },
+  { name: "Add Book", href: "/dashboard/add-new-book" },
 ];
+// ];
 
 const Navbar = () => {
   const [query, setQuery] = useState("");
@@ -103,9 +105,6 @@ const Navbar = () => {
   const profile = renderProfile();
   const isAdmin = profile?.isAdmin;
 
-  const [books, setBooks] = useState([]);
-  const [filteredBooks, setFilteredBooks] = useState([]);
-
   // Fetch books on mount
   useEffect(() => {
     const fetchBooks = async () => {
@@ -119,6 +118,9 @@ const Navbar = () => {
     };
     fetchBooks();
   }, []);
+
+  const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
 
   // Filter books when query changes
   useEffect(() => {
@@ -186,12 +188,12 @@ const Navbar = () => {
             />
 
             {filteredBooks.length > 0 && (
-                  <ul className="absolute  mt-2  ">
+              <ul className="absolute  mt-2  ">
                 {filteredBooks.map((book) => (
                   <li key={book._id || book.id}>
                     <Link
                       to={`/books/${book._id || book.id}`}
-          onClick={() => setQuery("")}
+                      onClick={() => setQuery("")}
                     >
                       <div className="font-semibold">{book.title}</div>
                       <div className="text-sm text-gray-600">

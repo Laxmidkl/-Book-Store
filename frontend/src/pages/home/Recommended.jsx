@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BookCard from "../books/BookCard";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,14 +13,14 @@ import "swiper/css/navigation";
 import { useFetchAllBooksQuery } from "../../redux/features/books/booksApi";
 
 function Recommended() {
-   const { data } = useFetchAllBooksQuery();
+  const { data } = useFetchAllBooksQuery();
 
   // Defensive: make sure books is an array (adjust 'books' key based on your API)
-    const books = data?.books || [];
+  const books = data?.books || [];
 
   return (
     <div className="py-16 px-10">
-      <h2 className="text-3xl font-semibold mb-6">Recommended for you </h2>
+      <h2 className="text-3xl font-semibold mb-6">Recommended for you</h2>
 
       <Swiper
         slidesPerView={1}
@@ -49,7 +48,7 @@ function Recommended() {
         className="mySwiper"
       >
         {books.length > 0 &&
-          books.slice(8, 18).map((book, index) => (
+          books.slice(10, 20).map((book, index) => (
             <SwiperSlide key={index}>
               <BookCard book={book} />
             </SwiperSlide>
@@ -60,3 +59,4 @@ function Recommended() {
 }
 
 export default Recommended;
+

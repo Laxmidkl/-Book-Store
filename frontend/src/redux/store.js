@@ -1,18 +1,24 @@
-import { configureStore } from '@reduxjs/toolkit'
-import cartReducer from "../redux/features/cart/cartSlice"
-import booksApi from './features/books/booksApi'
-import ordersApi from './features/orders/ordersApi'
+import { configureStore } from "@reduxjs/toolkit";
+import cartReducer from "./features/cart/cartSlice";
+import booksApi from "./features/books/booksApi";
+import ordersApi from "./features/orders/ordersApi";
+import { adminStatsApi } from "./adminStatsApi";
+import { usersApi } from "./usersApi";
+
 export const store = configureStore({
   reducer: {
-
     cart: cartReducer,
-        [booksApi.reducerPath]: booksApi.reducer,
-        [ordersApi.reducerPath]: ordersApi.reducer,
-
+    [booksApi.reducerPath]: booksApi.reducer,
+    [ordersApi.reducerPath]: ordersApi.reducer,
+    [adminStatsApi.reducerPath]: adminStatsApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
   },
-
-    middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(booksApi.middleware, ordersApi.middleware),
-
-   devTools: true,  
-})
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(
+      booksApi.middleware,
+      ordersApi.middleware,
+      adminStatsApi.middleware,
+      usersApi.middleware
+    ),
+  devTools: true,
+});
