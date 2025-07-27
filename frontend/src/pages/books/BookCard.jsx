@@ -1,10 +1,10 @@
-
 import React from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import { getImgUrl } from "../../utils/getImgUrl";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/cart/cartSlice";
+import LikeButton from "../../components/LikeButton";
 
 const BookCard = ({ book }) => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const BookCard = ({ book }) => {
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
   };
-  
+
   // Use direct URL if image is from online, otherwise load from local folder
   const imageSrc = book.coverImage.startsWith("http")
     ? book.coverImage
@@ -41,6 +41,17 @@ const BookCard = ({ book }) => {
             {book?.title}
           </h3>
         </Link>
+
+        {/* Likebutton */}
+        <div className="flex items-center mb-4">
+          <LikeButton
+            bookId={book._id}
+            initialLikes={book.likes?.length || 0}
+            initialLiked={book.likes?.some(
+              (like) => like.userId === localStorage.getItem("uid")
+            )}
+          />
+        </div>
 
         {/* Description */}
         <p className="text-sm text-gray-600  line-clamp-2 ">

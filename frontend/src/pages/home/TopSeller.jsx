@@ -19,7 +19,7 @@ import { useFetchAllBooksQuery } from '../../redux/features/books/booksApi';
 import { query } from 'firebase/firestore';
 import { IoSearchOutline } from 'react-icons/io5';
 
-const categories = ["Choose a genre", "Business", "Fiction", "Horror", "Adventure"]
+const categories = ["Choose a genre", "Business", "Fiction", "Technology", "Adventure"]
 
 const TopSellers = () => {
     const [selectedCategory, setSelectedCategory] = useState("Choose a genre");

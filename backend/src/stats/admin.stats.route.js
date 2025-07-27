@@ -1,8 +1,6 @@
-
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const verifyAdminToken = require('../middleware/verifyAdminToken');
+const verifyAdminToken = require("../middleware/verifyAdminToken");
 
 const Book = require("../books/book.model");
 const Order = require("../orders/order.model");
@@ -15,19 +13,19 @@ router.get("/stats", verifyAdminToken, async (req, res) => {
     const [totalBooks, totalOrders, totalUsers] = await Promise.all([
       Book.countDocuments(),
       Order.countDocuments(),
-      User.countDocuments()
+      User.countDocuments(),
     ]);
 
     // Get completed sales info
     const salesResult = await Order.aggregate([
       { $match: { paymentStatus: "COMPLETE" } },
-      { 
-        $group: { 
-          _id: null, 
+      {
+        $group: {
+          _id: null,
           totalSales: { $sum: "$totalPrice" },
-          completedOrders: { $sum: 1 }
-        } 
-      }
+          completedOrders: { $sum: 1 },
+        },
+      },
     ]);
 
     // Trending books
@@ -41,18 +39,18 @@ router.get("/stats", verifyAdminToken, async (req, res) => {
           from: "books",
           localField: "_id",
           foreignField: "_id",
-          as: "bookDetails"
-        }
+          as: "bookDetails",
+        },
       },
       { $unwind: "$bookDetails" },
-      { 
-        $project: { 
+      {
+        $project: {
           title: "$bookDetails.title",
           price: "$bookDetails.price",
           coverImage: "$bookDetails.coverImage",
-          count: 1 
-        } 
-      }
+          count: 1,
+        },
+      },
     ]);
 
     // Monthly sales
@@ -62,11 +60,11 @@ router.get("/stats", verifyAdminToken, async (req, res) => {
         $group: {
           _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
           totalSales: { $sum: "$totalPrice" },
-          orderCount: { $sum: 1 }
-        }
+          orderCount: { $sum: 1 },
+        },
       },
       { $sort: { _id: 1 } },
-      { $project: { month: "$_id", totalSales: 1, orderCount: 1, _id: 0 } }
+      { $project: { month: "$_id", totalSales: 1, orderCount: 1, _id: 0 } },
     ]);
 
     res.status(200).json({
@@ -78,22 +76,24 @@ router.get("/stats", verifyAdminToken, async (req, res) => {
       // Sales data
       totalSales: salesResult[0]?.totalSales || 0,
       completedOrders: salesResult[0]?.completedOrders || 0,
-      averageOrderValue: salesResult[0] ? 
-        (salesResult[0].totalSales / salesResult[0].completedOrders).toFixed(2) : 0,
+      averageOrderValue: salesResult[0]
+        ? (salesResult[0].totalSales / salesResult[0].completedOrders).toFixed(
+            2
+          )
+        : 0,
 
       // Trending data
       trendingBooks,
       trendingBooksCount: await Book.countDocuments({ trending: true }),
 
       // Time-based analytics
-      monthlySales
+      monthlySales,
     });
-
   } catch (error) {
     console.error("Error fetching admin stats:", error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: "Failed to fetch admin stats",
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
 });

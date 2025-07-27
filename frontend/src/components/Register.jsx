@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
@@ -17,18 +19,20 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
+      const fullName = `${data.firstName} ${data.lastName}`;
+      
       await registerUser(
         data.email,
         data.password,
-        data.firstName,
-        data.lastName,
+        fullName,
         data.phone,
         data.address
       );
+      
       alert("User registered successfully!");
       navigate("/");
     } catch (error) {
-      setMessage("Please provide valid information.");
+      setMessage("Registration failed. Please try again.");
       console.error(error);
     }
   };
@@ -36,7 +40,7 @@ const Register = () => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
-      alert("Register successful!");
+      alert("Registration successful!");
       navigate("/");
     } catch (error) {
       alert("Google sign in failed!");
@@ -45,61 +49,54 @@ const Register = () => {
   };
 
   return (
-    <div className=" flex justify-center items-center">
+    <div className="flex justify-center items-center">
       <div className="w-full max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h2 className="text-xl font-semibold mb-4">Please Register</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="firstName"
-            >
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstName">
               First Name
             </label>
             <input
-              {...register("firstName", { required: true })}
+              {...register("firstName", { required: "First name is required" })}
               type="text"
               id="firstName"
               placeholder="First Name"
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow"
             />
             {errors.firstName && (
-              <p className="text-red-500 text-xs italic">First Name is required</p>
+              <p className="text-red-500 text-xs italic">{errors.firstName.message}</p>
             )}
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="lastName"
-            >
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
               Last Name
             </label>
             <input
-              {...register("lastName", { required: true })}
+              {...register("lastName", { required: "Last name is required" })}
               type="text"
               id="lastName"
               placeholder="Last Name"
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow"
             />
             {errors.lastName && (
-              <p className="text-red-500 text-xs italic">Last Name is required</p>
+              <p className="text-red-500 text-xs italic">{errors.lastName.message}</p>
             )}
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="email"
-            >
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
               Email
             </label>
             <input
               {...register("email", {
-                required: true,
-                pattern:
-                  /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                  message: "Please enter a valid email"
+                }
               })}
               type="email"
               id="email"
@@ -107,42 +104,43 @@ const Register = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow"
             />
             {errors.email && (
-              <p className="text-red-500 text-xs italic">Valid email is required</p>
+              <p className="text-red-500 text-xs italic">{errors.email.message}</p>
             )}
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="password"
-            >
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
               Password
             </label>
             <input
-              {...register("password", { required: true, minLength: 6 })}
+              {...register("password", { 
+                required: "Password is required", 
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters"
+                }
+              })}
               type="password"
               id="password"
               placeholder="Password (min 6 characters)"
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow"
             />
             {errors.password && (
-              <p className="text-red-500 text-xs italic">
-                Password is required (min 6 characters)
-              </p>
+              <p className="text-red-500 text-xs italic">{errors.password.message}</p>
             )}
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="phone"
-            >
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
               Phone Number
             </label>
             <input
               {...register("phone", {
-                required: true,
-                pattern: /^[0-9]{10,15}$/,
+                required: "Phone number is required",
+                pattern: {
+                  value: /^[0-9]{10}$/,
+                  message: "Please enter a 10-digit phone number"
+                }
               })}
               type="tel"
               id="phone"
@@ -150,28 +148,23 @@ const Register = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow"
             />
             {errors.phone && (
-              <p className="text-red-500 text-xs italic">
-                Valid phone number is required
-              </p>
+              <p className="text-red-500 text-xs italic">{errors.phone.message}</p>
             )}
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="address"
-            >
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
               Address
             </label>
-            <input
-              {...register("address", { required: true })}
+            <textarea
+              {...register("address", { required: "Address is required" })}
               id="address"
-              placeholder="Your Address"
+              placeholder="Your complete address"
+              rows={3}
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow"
-              
             />
             {errors.address && (
-              <p className="text-red-500 text-xs italic">Address is required</p>
+              <p className="text-red-500 text-xs italic">{errors.address.message}</p>
             )}
           </div>
 
@@ -196,7 +189,6 @@ const Register = () => {
           </Link>
         </p>
 
-        {/* Google Sign In */}
         <div className="mt-4">
           <button
             onClick={handleGoogleSignIn}

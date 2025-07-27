@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -6,11 +7,10 @@ import {
   onAuthStateChanged,
   updateProfile,
   GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-import { auth, db } from "../firebase/firebase.config";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import axios from "axios";
+  signInWithPopup
+} from 'firebase/auth';
+import { auth, db } from '../firebase/firebase.config';
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 
 const AuthContext = createContext();
 
@@ -21,18 +21,31 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // Check Firestore for additional user data
         const userDoc = await getDoc(doc(db, "users", user.uid));
-        const userData = userDoc.exists() ? userDoc.data() : {};
-
-        setCurrentUser({
-          uid: user.uid,
-          email: user.email,
-          fullName: userData.fullName || user.displayName || "",
-          phone: userData.phone || "",
-          address: userData.address || "",
-          photoURL: user.photoURL || "",
-        });
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setCurrentUser({
+            uid: user.uid,
+            email: user.email,
+            ...userData
+          });
+        } else {
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            email: user.email,
+            fullName: user.displayName || '',
+            phone: '',
+            address: '',
+            createdAt: new Date()
+          });
+          setCurrentUser({
+            uid: user.uid,
+            email: user.email,
+            fullName: user.displayName || '',
+            phone: '',
+            address: ''
+          });
+        }
       } else {
         setCurrentUser(null);
       }
@@ -42,29 +55,27 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-  const registerUser = async (email, password, fullName) => {
+  const registerUser = async (email, password, fullName, phone, address) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      // Set displayName in Firebase Auth (using fullName)
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      
       await updateProfile(auth.currentUser, { displayName: fullName });
-
-      // Create user document in Firestore
+      
       await setDoc(doc(db, "users", userCredential.user.uid), {
         uid: userCredential.user.uid,
-        fullName,
         email,
-        createdAt: new Date(),
+        fullName,
+        phone,
+        address,
+        createdAt: new Date()
       });
 
       setCurrentUser({
         uid: userCredential.user.uid,
+        email,
         fullName,
-        email: userCredential.user.email,
+        phone,
+        address
       });
 
       return userCredential;
@@ -83,25 +94,20 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-
-      // Create user document in Firestore if it doesn't exist
-      await setDoc(
-        doc(db, "users", user.uid),
-        {
-          uid: user.uid,
-          fullName: user.displayName || "",
-          email: user.email,
-          photoURL: user.photoURL || "",
-          createdAt: new Date(),
-        },
-        { merge: true }
-      );
+      
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        fullName: user.displayName || '',
+        photoURL: user.photoURL || '',
+        createdAt: new Date()
+      }, { merge: true });
 
       setCurrentUser({
         uid: user.uid,
-        fullName: user.displayName || "",
         email: user.email,
-        photoURL: user.photoURL || "",
+        fullName: user.displayName || '',
+        photoURL: user.photoURL || ''
       });
 
       return result;
@@ -116,25 +122,19 @@ export const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
-  const updateUserProfile = async (uid, updates) => {
+  const updateUserProfile = async (updates) => {
+    if (!currentUser) return;
+    
     try {
-      // Update in Firebase Auth if fullName is provided
       if (updates.fullName) {
         await updateProfile(auth.currentUser, {
-          displayName: updates.fullName,
+          displayName: updates.fullName
         });
       }
 
-      // Update in Firestore
-      await setDoc(doc(db, "users", uid), updates, { merge: true });
-
-      // Update local state
-      setCurrentUser((prev) => ({
-        ...prev,
-        ...updates,
-        fullName: updates.fullName || prev.fullName,
-      }));
-
+      await updateDoc(doc(db, "users", currentUser.uid), updates);
+      setCurrentUser(prev => ({ ...prev, ...updates }));
+      
       return true;
     } catch (error) {
       console.error("Error updating profile:", error);

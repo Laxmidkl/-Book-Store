@@ -32,10 +32,11 @@
   object-fit: cover;
 }
 
-.swiper-button-prev {
-  display: none !important;
-}
+/* .swiper-button-prev {
+  display: none 
+} */
 
+.swiper-button-prev,
 .swiper-button-next {
   @apply bg-white p-5 rounded-full z-50 shadow-md;
 }
@@ -52,3 +53,4 @@
 .html {
   scroll-behavior: smooth;
 }
+

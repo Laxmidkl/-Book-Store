@@ -49,6 +49,8 @@ const AddBook = () => {
       setimageFileName(file.name);
     }
   };
+
+  
   return (
     <div className="max-w-lg   mx-auto md:p-6 p-3 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Add New Book</h2>
@@ -88,9 +90,7 @@ const AddBook = () => {
             { value: "business", label: "Business" },
             { value: "technology", label: "Technology" },
             { value: "fiction", label: "Fiction" },
-            { value: "horror", label: "Horror" },
             { value: "adventure", label: "Adventure" },
-            // Add more options as needed
           ]}
           register={register}
         />

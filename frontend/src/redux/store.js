@@ -1,9 +1,40 @@
-import { configureStore } from "@reduxjs/toolkit";
-import cartReducer from "./features/cart/cartSlice";
-import booksApi from "./features/books/booksApi";
-import ordersApi from "./features/orders/ordersApi";
-import { adminStatsApi } from "./adminStatsApi";
-import { usersApi } from "./usersApi";
+// import { configureStore } from "@reduxjs/toolkit";
+// import cartReducer from "./features/cart/cartSlice";
+// import booksApi from "./features/books/booksApi";
+// import ordersApi from "./features/orders/ordersApi";
+// import { adminStatsApi } from "./adminStatsApi";
+// import { usersApi } from "./usersApi";
+
+// export const store = configureStore({
+//   reducer: {
+//     cart: cartReducer,
+//     [booksApi.reducerPath]: booksApi.reducer,
+//     [ordersApi.reducerPath]: ordersApi.reducer,
+//     [adminStatsApi.reducerPath]: adminStatsApi.reducer,
+//     [usersApi.reducerPath]: usersApi.reducer,
+//   },
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware().concat(
+//       booksApi.middleware,
+//       ordersApi.middleware,
+//       adminStatsApi.middleware,
+//       usersApi.middleware
+//     ),
+//   devTools: true,
+// });
+
+
+
+
+
+
+import { configureStore } from '@reduxjs/toolkit';
+import cartReducer from './features/cart/cartSlice';
+import booksApi from './features/books/booksApi';
+import ordersApi from './features/orders/ordersApi';
+import { adminStatsApi } from './adminStatsApi';
+import { usersApi } from './usersApi';
+
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +44,11 @@ export const store = configureStore({
     [adminStatsApi.reducerPath]: adminStatsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
   },
+
+
+
+
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       booksApi.middleware,

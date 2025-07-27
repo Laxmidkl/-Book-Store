@@ -2,13 +2,18 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getImgUrl } from "../../utils/getImgUrl";
-import { clearCart, removeFromCart } from "../../redux/features/cart/cartSlice";
+import {
+  clearCart,
+  removeFromCart,
+  incrementQuantity,
+  decrementQuantity,
+} from "../../redux/features/cart/cartSlice";
 
 function CartPage() {
   const cartItems = useSelector((state) => state.cart.cartItems);
 
   const totalPrice = cartItems
-    .reduce((acc, item) => acc + item.newPrice, 0)
+    .reduce((acc, item) => acc + item.newPrice * item.quantity, 0)
     .toFixed(2);
 
   const dispatch = useDispatch();
@@ -19,6 +24,14 @@ function CartPage() {
 
   const handleClearCart = () => {
     dispatch(clearCart());
+  };
+
+  const handleIncrementQuantity = (productId) => {
+    dispatch(incrementQuantity(productId));
+  };
+
+  const handleDecrementQuantity = (productId) => {
+    dispatch(decrementQuantity(productId));
   };
 
   return (
@@ -33,7 +46,7 @@ function CartPage() {
               <button
                 onClick={handleClearCart}
                 type="button"
-                className="relative -m-2 py-1 px-2 bg-red-500 text-white rounded-md hover:bg-secondary transition-all duration-200  "
+                className="relative -m-2 py-1 px-2 bg-red-500 text-white rounded-md hover:bg-secondary transition-all duration-200"
               >
                 <span className="">Clear Cart</span>
               </button>
@@ -60,7 +73,10 @@ function CartPage() {
                             <h3>
                               <Link to="/">{product?.title}</Link>
                             </h3>
-                            <p className="sm:ml-4">{product?.newPrice}</p>
+                            <p className="sm:ml-4">
+                              Rs.
+                              {(product.newPrice * product.quantity).toFixed(2)}
+                            </p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500 capitalize">
                             <strong>Category: </strong>
@@ -68,9 +84,28 @@ function CartPage() {
                           </p>
                         </div>
                         <div className="flex flex-1 flex-wrap items-end justify-between space-y-2 text-sm">
-                          <p className="text-gray-500">
-                            <strong>Quantity:</strong> 1
-                          </p>
+                          <div className="flex items-center">
+                            <button
+                              onClick={() =>
+                                handleDecrementQuantity(product._id)
+                              }
+                              className="px-2 py-1 border rounded-l-md"
+                              disabled={product.quantity <= 1}
+                            >
+                              -
+                            </button>
+                            <span className="px-4 py-1 border-t border-b">
+                              {product.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                handleIncrementQuantity(product._id)
+                              }
+                              className="px-2 py-1 border rounded-r-md"
+                            >
+                              +
+                            </button>
+                          </div>
 
                           <div className="flex">
                             <button
