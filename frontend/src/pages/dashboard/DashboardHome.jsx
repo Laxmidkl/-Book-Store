@@ -8,6 +8,7 @@ import StatsCard from './stats/StatsCard';
 import Loading from '../../components/Loading';
 import { toast } from 'react-toastify';
 import SalesChart from './stats/SalesChart';
+import Navbar from "../../components/Navbar";
 
 const DashboardHome = () => {
   const { data: ordersData, isLoading: isLoadingOrders, isError, refetch } = useGetAllOrdersQuery();
@@ -117,6 +118,7 @@ const monthlySales = Object.entries(salesByMonth)
 
   return (
     <>
+    <Navbar/>
       <h1 className="text-2xl font-bold mb-6">Dashboard Overview</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -157,7 +159,7 @@ const monthlySales = Object.entries(salesByMonth)
                 <div className="flex-1">
                   <p className="font-medium">{book.title}</p>
                   <p className="text-sm text-gray-600">
-                    Ordered {book.count} times | Rs. {book.price}
+                    Ordered {book.count} times
                   </p>
                 </div>
               </div>

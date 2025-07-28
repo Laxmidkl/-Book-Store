@@ -6,7 +6,7 @@ export const adminStatsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${getBaseUrl()}/api/admin`,
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token'); // Use your token key here
+      const token = localStorage.getItem('token'); // Use  token key here
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }

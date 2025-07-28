@@ -14,14 +14,11 @@ function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
- 
   const totalPrice = cartItems
-    .reduce((acc, item) => acc + (item.newPrice * item.quantity), 0)
+    .reduce((acc, item) => acc + item.newPrice * item.quantity, 0)
     .toFixed(2);
 
-  
-  const totalItems = cartItems
-    .reduce((acc, item) => acc + item.quantity, 0);
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const {
     register,
@@ -32,7 +29,7 @@ function CheckoutPage() {
   const handleCashOnDelivery = async (formData) => {
     setIsSubmitting(true);
     setError(null);
-    
+
     try {
       const newOrder = {
         name: formData.name,
@@ -47,25 +44,31 @@ function CheckoutPage() {
         productIds: cartItems.map((item) => ({
           _id: item._id,
           quantity: item.quantity,
-          price: item.newPrice
+          price: item.newPrice,
         })),
         totalPrice: totalPrice,
         totalItems: totalItems,
         paymentMethod: "CASH_ON_DELIVERY",
-        paymentStatus: "PENDING"
+        paymentStatus: "PENDING",
       };
 
-      const response = await axios.post("http://localhost:5000/api/orders", newOrder);
-      
-      navigate("/order-confirmation", { 
-        state: { 
+      const response = await axios.post(
+        "http://localhost:5000/api/orders",
+        newOrder
+      );
+
+      navigate("/order-confirmation", {
+        state: {
           orderId: response.data._id,
-          paymentMethod: "CASH_ON_DELIVERY"
-        } 
+          paymentMethod: "CASH_ON_DELIVERY",
+        },
       });
     } catch (err) {
       console.error("Error creating order:", err);
-      setError(err.response?.data?.message || "Failed to place order. Please try again.");
+      setError(
+        err.response?.data?.message ||
+          "Failed to place order. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -85,12 +88,12 @@ function CheckoutPage() {
       productIds: cartItems.map((item) => ({
         _id: item._id,
         quantity: item.quantity,
-        price: item.newPrice
+        price: item.newPrice,
       })),
       totalPrice: totalPrice,
       totalItems: totalItems,
       paymentMethod: "ESEWA",
-      paymentStatus: "PENDING"
+      paymentStatus: "PENDING",
     };
 
     localStorage.setItem("pendingOrder", JSON.stringify(newOrder));
@@ -110,7 +113,9 @@ function CheckoutPage() {
       <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
         <div className="container max-w-screen-lg mx-auto">
           <div>
-            <h2 className="font-semibold text-xl text-gray-600 mb-2">Checkout</h2>
+            <h2 className="font-semibold text-xl text-gray-600 mb-2">
+              Checkout
+            </h2>
             <p className="text-gray-500 mb-2">Rs.{totalPrice}</p>
             <p className="text-gray-500 mb-6">
               Items: {totalItems > 0 ? totalItems : 0}
@@ -137,7 +142,9 @@ function CheckoutPage() {
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       />
                       {errors.name && (
-                        <p className="text-red-500 text-xs mt-1">Name is required.</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          Name is required.
+                        </p>
                       )}
                     </div>
 
@@ -155,13 +162,21 @@ function CheckoutPage() {
                     <div className="md:col-span-5">
                       <label htmlFor="phone">Phone Number</label>
                       <input
-                        {...register("phone", { required: true })}
+                        {...register("phone", {
+                          required: true,
+                          pattern: {
+                            value: /^[0-9]{10}$/,
+                            message: "Please enter a 10-digit phone number",
+                          },
+                        })}
                         type="number"
                         id="phone"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       />
                       {errors.phone && (
-                        <p className="text-red-500 text-xs mt-1">Phone is required.</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          Please enter a 10-digit phone number.
+                        </p>
                       )}
                     </div>
 
@@ -174,7 +189,9 @@ function CheckoutPage() {
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       />
                       {errors.address && (
-                        <p className="text-red-500 text-xs mt-1">Address is required.</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          Address is required.
+                        </p>
                       )}
                     </div>
 
@@ -187,7 +204,9 @@ function CheckoutPage() {
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       />
                       {errors.city && (
-                        <p className="text-red-500 text-xs mt-1">City is required.</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          City is required.
+                        </p>
                       )}
                     </div>
 
@@ -200,7 +219,9 @@ function CheckoutPage() {
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       />
                       {errors.country && (
-                        <p className="text-red-500 text-xs mt-1">Country is required.</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          Country is required.
+                        </p>
                       )}
                     </div>
 
@@ -213,7 +234,9 @@ function CheckoutPage() {
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       />
                       {errors.state && (
-                        <p className="text-red-500 text-xs mt-1">State is required.</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          State is required.
+                        </p>
                       )}
                     </div>
 
@@ -226,7 +249,9 @@ function CheckoutPage() {
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       />
                       {errors.zipcode && (
-                        <p className="text-red-500 text-xs mt-1">Zipcode is required.</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          Zipcode is required.
+                        </p>
                       )}
                     </div>
 
@@ -269,16 +294,20 @@ function CheckoutPage() {
                         />
                         <label htmlFor="billing_same" className="ml-2">
                           I agree to the{" "}
-                          <Link className="underline text-blue-600">Terms & Conditions</Link> and{" "}
-                          <Link className="underline text-blue-600">Shopping Policy</Link>.
+                          <Link className="underline text-blue-600">
+                            Terms & Conditions
+                          </Link>{" "}
+                          and{" "}
+                          <Link className="underline text-blue-600">
+                            Shopping Policy
+                          </Link>
+                          .
                         </label>
                       </div>
                     </div>
 
                     {error && (
-                      <div className="md:col-span-5 text-red-500">
-                        {error}
-                      </div>
+                      <div className="md:col-span-5 text-red-500">{error}</div>
                     )}
 
                     <div className="md:col-span-5 text-right">
@@ -293,13 +322,11 @@ function CheckoutPage() {
                             : "bg-gray-300 cursor-not-allowed"
                         } text-white font-bold py-2 px-4 rounded`}
                       >
-                        {isSubmitting ? (
-                          "Processing..."
-                        ) : paymentMethod === "esewa" ? (
-                          "Pay with eSewa"
-                        ) : (
-                          "Place Order (Cash on Delivery)"
-                        )}
+                        {isSubmitting
+                          ? "Processing..."
+                          : paymentMethod === "esewa"
+                          ? "Pay with eSewa"
+                          : "Place Order (Cash on Delivery)"}
                       </button>
                     </div>
                   </div>
@@ -314,5 +341,3 @@ function CheckoutPage() {
 }
 
 export default CheckoutPage;
-
-

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import InputField from "../addBook/InputField";
 import SelectField from "../addBook/SelectField";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   useFetchBookByIdQuery,
   useUpdateBookMutation,
@@ -18,7 +18,8 @@ const UpdateBook = () => {
   const bookData = data?.book;
 
   const [updateBook] = useUpdateBookMutation();
-  const { register, handleSubmit, setValue, reset } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (bookData) {
@@ -50,19 +51,27 @@ const UpdateBook = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      Swal.fire({
+
+      // Show success alert
+      await Swal.fire({
         title: "Book Updated",
         text: "Your book is updated successfully!",
         icon: "success",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, It's Okay!",
+        confirmButtonText: "OK",
       });
+
+      // Navigate to home page after successful update
+      navigate("/dashboard/manage-books");
+
+      // Refetch data (optional, if needed)
       await refetch();
     } catch (error) {
       console.log("Failed to update book.", error);
-      alert("Failed to update book.");
+      Swal.fire({
+        title: "Error",
+        text: "Failed to update book.",
+        icon: "error",
+      });
     }
   };
 
@@ -102,6 +111,7 @@ const UpdateBook = () => {
           ]}
           register={register}
         />
+
         <div className="mb-4">
           <label className="inline-flex items-center">
             <input
@@ -141,7 +151,7 @@ const UpdateBook = () => {
 
         <button
           type="submit"
-          className="w-full py-2 bg-blue-500 text-white font-bold rounded-md"
+          className="w-full py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 transition"
         >
           Update Book
         </button>

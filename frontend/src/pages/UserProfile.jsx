@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+   import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+
 
 const UserProfile = () => {
   const { currentUser, updateUserProfile } = useAuth();
@@ -11,12 +12,14 @@ const UserProfile = () => {
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm();
+
 
   useEffect(() => {
     if (currentUser) {
@@ -28,6 +31,7 @@ const UserProfile = () => {
     }
   }, [currentUser, reset]);
 
+
   const getUserInitials = (user) => {
     if (!user?.fullName) return (user?.email?.[0] || "").toUpperCase();
     const parts = user.fullName.trim().split(" ");
@@ -35,11 +39,12 @@ const UserProfile = () => {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   };
 
+
   const onSubmit = async (data) => {
     setLoading(true);
     setError("");
     setSuccess("");
-    
+   
     try {
       await updateUserProfile(data);
       setSuccess("Profile updated successfully!");
@@ -53,10 +58,12 @@ const UserProfile = () => {
     }
   };
 
+
   if (!currentUser) {
     navigate("/login");
     return null;
   }
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -72,6 +79,7 @@ const UserProfile = () => {
             <p className="text-blue-100">{currentUser.email}</p>
           </div>
 
+
           <div className="px-6 py-8">
             {error && (
               <div className="mb-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
@@ -79,11 +87,13 @@ const UserProfile = () => {
               </div>
             )}
 
+
             {success && (
               <div className="mb-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4">
                 <p>{success}</p>
               </div>
             )}
+
 
             {isEditing ? (
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -103,12 +113,27 @@ const UserProfile = () => {
                     )}
                   </div>
 
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={currentUser.email}
+                      disabled
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-gray-100 cursor-not-allowed"
+                    />
+                  </div>
+
+
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                       Phone Number
                     </label>
                     <input
-                      type="tel"
+                      type="number"
                       id="phone"
                       {...register("phone", {
                         required: "Phone number is required",
@@ -124,6 +149,7 @@ const UserProfile = () => {
                     )}
                   </div>
 
+
                   <div>
                     <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                       Address
@@ -138,6 +164,7 @@ const UserProfile = () => {
                       <p className="mt-1 text-sm text-red-600">{errors.address.message}</p>
                     )}
                   </div>
+
 
                   <div className="flex justify-end space-x-4">
                     <button
@@ -192,6 +219,7 @@ const UserProfile = () => {
                   </div>
                 </div>
 
+
                 <div className="flex justify-end">
                   <button
                     onClick={() => setIsEditing(true)}
@@ -209,4 +237,15 @@ const UserProfile = () => {
   );
 };
 
+
 export default UserProfile;
+
+
+
+
+
+
+
+
+
+

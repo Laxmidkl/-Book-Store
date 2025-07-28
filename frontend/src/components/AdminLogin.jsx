@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import getBaseUrl from "../utils/baseURL";
+import PasswordInput from '../pages/PasswordInput';
+
 // import jwtDecode from 'jwt-decode';
 
 import { jwtDecode } from "jwt-decode";
@@ -17,7 +19,7 @@ const AdminLogin = () => {
 
   const navigate = useNavigate();
 
-  // ✅ Redirect if already logged in as admin
+  // Redirect if already logged in as admin
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -46,13 +48,13 @@ const AdminLogin = () => {
 
       const auth = response.data;
 
-      // ✅ Make sure the logged-in user is an admin
+      //  Make sure the logged-in user is an admin
       if (auth.user?.role !== "admin") {
         setMessage("You are not authorized as admin.");
         return;
       }
 
-      // ✅ Save token to localStorage
+      //  Save token to localStorage
       if (auth.token) {
         localStorage.setItem("token", auth.token);
 
@@ -104,14 +106,9 @@ const AdminLogin = () => {
             >
               Password
             </label>
-            <input
-              {...register("password", { required: true })}
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Password"
-              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow"
-            />
+        <PasswordInput register={register} name="password" placeholder="Password" />
+             
+            
             {errors.password && (
               <p className="text-red-500 text-xs italic">
                 Password is required

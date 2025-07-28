@@ -12,9 +12,9 @@ function App() {
       <AuthProvider>
         <Navbar />
         <main
-          className="min-h-screen max-w-screen-2xl mx-auto "
+          className="min-h-screen max-w-screen-2xl mx-auto mt-24 "
         >
-          <Outlet />
+          <Outlet  />
         </main>
         <Footer />
       </AuthProvider>

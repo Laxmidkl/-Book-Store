@@ -36,7 +36,7 @@ const TopSellers = () => {
 
     return (
         <div className='py-10 px-10'>
-            <h2 className='text-3xl font-semibold mb-6'>Top Sellers</h2>
+             <h2 className='text-2xl md:text-3xl font-semibold mb-4 md:mb-6'>Top Sellers</h2>
 
             {/* category filtering */}
             <div className='mb-8 flex items-center'>
@@ -44,7 +44,7 @@ const TopSellers = () => {
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     name="category"
                     id="category"
-                    className='border bg-[#EAEAEA] border-gray-300 rounded-md px-4 py-2 focus:outline-none'
+                    className='border bg-[#EAEAEA] border-gray-300 rounded-md px-3 py-1 md:px-4 md:py-2 text-sm md:text-base focus:outline-none w-full max-w-xs'
                     value={selectedCategory}
                 >
                     {

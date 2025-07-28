@@ -37,7 +37,7 @@ const About = () => {
             </div>
             <h3 className="text-xl font-semibold mb-2">Vast Collection</h3>
             <p className="text-gray-600">
-              Over 1 million titles across genres to satisfy every reader's
+              Get titles across genres to satisfy every reader's
               taste.
             </p>
           </div>
@@ -48,7 +48,7 @@ const About = () => {
             </div>
             <h3 className="text-xl font-semibold mb-2">Fast Delivery</h3>
             <p className="text-gray-600">
-              Get your books delivered within 2–3 business days nationwide.
+              Get your books delivered within 2–3  days .
             </p>
           </div>
 
@@ -58,7 +58,7 @@ const About = () => {
             </div>
             <h3 className="text-xl font-semibold mb-2">Secure Payments</h3>
             <p className="text-gray-600">
-              Pay confidently via eSewa, Khalti, cards & more. 100% safe &
+              Pay confidently via eSewa. 100% safe &
               secure.
             </p>
           </div>
@@ -72,6 +72,7 @@ const About = () => {
               Need help? We're here around the clock to assist you anytime.
             </p>
           </div>
+          
         </div>
       </div>
 
@@ -113,6 +114,34 @@ const About = () => {
           </div>
         </div>
       </div>
+
+      <div className="max-w-2xl  p-4 mt-10 mb-16 bg-white bg-opacity-90  text-gray-800">
+  <h2 className="text-2xl sm:text-3xl font-bold mb-4 flex items-center gap-2 text-amber-700">
+    📞 Contact Us
+  </h2>
+
+  <p className="mb-4 text-base sm:text-lg">
+    Have a question, feedback, or need assistance with your order? <br />
+    <span className="block mt-2">We’re here to help!</span>
+  </p>
+
+  <p className="mb-4 text-base sm:text-lg">
+    If you have any additional queries or require more details, feel free to reach out.
+    Our support team will get back to you as soon as possible — response time may vary
+    depending on the volume of queries, so we appreciate your patience.
+  </p>
+
+  <div className="mb-4 text-base sm:text-lg">
+    <p className="mb-2">📧 <strong>Email:</strong> support@bookbazar.com</p>
+    <p className="mb-2">☎️ <strong>Phone:</strong> +977-9800000000</p>
+    <p className="mb-2">🕐 <strong>Support Hours:</strong> Sunday to Friday, 10 AM – 6 PM</p>
+  </div>
+
+  <p className="text-base sm:text-lg font-medium">
+    Your satisfaction is our priority. We're always ready to assist you!
+  </p>
+</div>
+
     </div>
   );
 };

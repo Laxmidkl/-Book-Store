@@ -22,7 +22,7 @@ const LikeButton = ({ bookId, initialLikes, initialLiked }) => {
         userId: currentUser.uid,
       });
 
-      // ✅ Log user email, book title, and book ID
+      //  Log user email, book title, and book ID
       const book = response.data.book;
       console.log(
         `User "${currentUser.email}" ${

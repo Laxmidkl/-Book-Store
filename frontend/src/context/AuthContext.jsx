@@ -1,5 +1,4 @@
-
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -7,10 +6,10 @@ import {
   onAuthStateChanged,
   updateProfile,
   GoogleAuthProvider,
-  signInWithPopup
-} from 'firebase/auth';
-import { auth, db } from '../firebase/firebase.config';
-import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+  signInWithPopup,
+} from "firebase/auth";
+import { auth, db } from "../firebase/firebase.config";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -27,23 +26,23 @@ export const AuthProvider = ({ children }) => {
           setCurrentUser({
             uid: user.uid,
             email: user.email,
-            ...userData
+            ...userData,
           });
         } else {
           await setDoc(doc(db, "users", user.uid), {
             uid: user.uid,
             email: user.email,
-            fullName: user.displayName || '',
-            phone: '',
-            address: '',
-            createdAt: new Date()
+            fullName: user.displayName || "",
+            phone: "",
+            address: "",
+            createdAt: new Date(),
           });
           setCurrentUser({
             uid: user.uid,
             email: user.email,
-            fullName: user.displayName || '',
-            phone: '',
-            address: ''
+            fullName: user.displayName || "",
+            phone: "",
+            address: "",
           });
         }
       } else {
@@ -57,17 +56,30 @@ export const AuthProvider = ({ children }) => {
 
   const registerUser = async (email, password, fullName, phone, address) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      
+      // Additional client-side validation before Firebase
+      if (
+        !/^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
+      ) {
+        throw new Error(
+          "Invalid email format. Email must start with a letter and use a valid domain."
+        );
+      }
+
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
       await updateProfile(auth.currentUser, { displayName: fullName });
-      
+
       await setDoc(doc(db, "users", userCredential.user.uid), {
         uid: userCredential.user.uid,
         email,
         fullName,
         phone,
         address,
-        createdAt: new Date()
+        createdAt: new Date(),
       });
 
       setCurrentUser({
@@ -75,7 +87,7 @@ export const AuthProvider = ({ children }) => {
         email,
         fullName,
         phone,
-        address
+        address,
       });
 
       return userCredential;
@@ -94,20 +106,24 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        email: user.email,
-        fullName: user.displayName || '',
-        photoURL: user.photoURL || '',
-        createdAt: new Date()
-      }, { merge: true });
+
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          uid: user.uid,
+          email: user.email,
+          fullName: user.displayName || "",
+          photoURL: user.photoURL || "",
+          createdAt: new Date(),
+        },
+        { merge: true }
+      );
 
       setCurrentUser({
         uid: user.uid,
         email: user.email,
-        fullName: user.displayName || '',
-        photoURL: user.photoURL || ''
+        fullName: user.displayName || "",
+        photoURL: user.photoURL || "",
       });
 
       return result;
@@ -124,17 +140,17 @@ export const AuthProvider = ({ children }) => {
 
   const updateUserProfile = async (updates) => {
     if (!currentUser) return;
-    
+
     try {
       if (updates.fullName) {
         await updateProfile(auth.currentUser, {
-          displayName: updates.fullName
+          displayName: updates.fullName,
         });
       }
 
       await updateDoc(doc(db, "users", currentUser.uid), updates);
-      setCurrentUser(prev => ({ ...prev, ...updates }));
-      
+      setCurrentUser((prev) => ({ ...prev, ...updates }));
+
       return true;
     } catch (error) {
       console.error("Error updating profile:", error);

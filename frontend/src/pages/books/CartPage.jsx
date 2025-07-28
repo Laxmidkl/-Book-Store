@@ -57,69 +57,78 @@ function CartPage() {
             <div className="flow-root">
               {cartItems.length > 0 ? (
                 <ul role="list" className="-my-6 divide-y divide-gray-200">
-                  {cartItems.map((product) => (
-                    <li key={product._id} className="flex py-6">
-                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                        <img
-                          alt=""
-                          src={`${getImgUrl(product?.coverImage)}`}
-                          className="h-full w-full object-cover object-center"
-                        />
-                      </div>
+                  {cartItems.map((product) => {
+                    // for image that come from URL
+                    const imageSrc = product.coverImage.startsWith("http")
+                      ? product.coverImage
+                      : getImgUrl(product.coverImage);
 
-                      <div className="ml-4 flex flex-1 flex-col">
-                        <div>
-                          <div className="flex flex-wrap justify-between text-base font-medium text-gray-900">
-                            <h3>
-                              <Link to="/">{product?.title}</Link>
-                            </h3>
-                            <p className="sm:ml-4">
-                              Rs.
-                              {(product.newPrice * product.quantity).toFixed(2)}
+                    return (
+                      <li key={product._id} className="flex py-6">
+                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                          <img
+                            alt=""
+                            src={imageSrc}
+                            className="h-full w-full object-cover object-center"
+                          />
+                        </div>
+
+                        <div className="ml-4 flex flex-1 flex-col">
+                          <div>
+                            <div className="flex flex-wrap justify-between text-base font-medium text-gray-900">
+                              <h3>
+                                <Link to="/">{product?.title}</Link>
+                              </h3>
+                              <p className="sm:ml-4">
+                                Rs.
+                                {(product.newPrice * product.quantity).toFixed(
+                                  2
+                                )}
+                              </p>
+                            </div>
+                            <p className="mt-1 text-sm text-gray-500 capitalize">
+                              <strong>Category: </strong>
+                              {product?.category}
                             </p>
                           </div>
-                          <p className="mt-1 text-sm text-gray-500 capitalize">
-                            <strong>Category: </strong>
-                            {product?.category}
-                          </p>
-                        </div>
-                        <div className="flex flex-1 flex-wrap items-end justify-between space-y-2 text-sm">
-                          <div className="flex items-center">
-                            <button
-                              onClick={() =>
-                                handleDecrementQuantity(product._id)
-                              }
-                              className="px-2 py-1 border rounded-l-md"
-                              disabled={product.quantity <= 1}
-                            >
-                              -
-                            </button>
-                            <span className="px-4 py-1 border-t border-b">
-                              {product.quantity}
-                            </span>
-                            <button
-                              onClick={() =>
-                                handleIncrementQuantity(product._id)
-                              }
-                              className="px-2 py-1 border rounded-r-md"
-                            >
-                              +
-                            </button>
-                          </div>
+                          <div className="flex flex-1 flex-wrap items-end justify-between space-y-2 text-sm">
+                            <div className="flex items-center">
+                              <button
+                                onClick={() =>
+                                  handleDecrementQuantity(product._id)
+                                }
+                                className="px-2 py-1 border rounded-l-md"
+                                disabled={product.quantity <= 1}
+                              >
+                                -
+                              </button>
+                              <span className="px-4 py-1 border-t border-b">
+                                {product.quantity}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  handleIncrementQuantity(product._id)
+                                }
+                                className="px-2 py-1 border rounded-r-md"
+                              >
+                                +
+                              </button>
+                            </div>
 
-                          <div className="flex">
-                            <button
-                              onClick={() => handleRemoveFromCart(product)}
-                              type="button"
-                              className="font-medium text-indigo-600 hover:text-indigo-500"
-                            >
-                              Remove
-                            </button>
+                            <div className="flex">
+                              <button
+                                onClick={() => handleRemoveFromCart(product)}
+                                type="button"
+                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                              >
+                                Remove
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </li>
-                  ))}
+                      </li>
+                    );
+                  })}
                 </ul>
               ) : (
                 <p> No product found!</p>

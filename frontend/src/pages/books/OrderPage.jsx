@@ -1,8 +1,3 @@
-
-
-
-
-
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetOrderByIdQuery } from '../../redux/features/orders/ordersApi';
@@ -18,18 +13,18 @@ const OrderPage = () => {
   if (!order) return <div className="text-center p-8">Order not found</div>;
 
   return (
-    <div className='container mx-auto p-6'>
-      <h2 className='text-2xl font-semibold mb-6'>Order Details</h2>
+    <div className='container mx-auto px-4 py-6 sm:px-6'>
+      <h2 className='text-xl sm:text-2xl font-semibold mb-4 sm:mb-6'>Order Details</h2>
       
-      <div className="border rounded-lg p-6 shadow-sm">
-        <div className="flex justify-between items-start mb-4">
+      <div className="border rounded-lg p-4 sm:p-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2">
           <div>
-            <h2 className="text-lg font-semibold">Order ID: {order._id}</h2>
-            <p className="text-gray-600">
+            <h2 className="text-base sm:text-lg font-semibold">Order ID: {order._id}</h2>
+            <p className="text-sm sm:text-base text-gray-600">
               {new Date(order.createdAt).toLocaleString()}
             </p>
           </div>
-          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+          <span className={`px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-medium self-start sm:self-auto ${
             order.paymentStatus === "COMPLETE" 
               ? "bg-green-100 text-green-800" 
               : "bg-yellow-100 text-yellow-800"
@@ -38,34 +33,37 @@ const OrderPage = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <h3 className="font-medium text-gray-700">Customer Details</h3>
-            <p className="text-gray-600">Name: {order.name}</p>
-            <p className="text-gray-600">Email: {order.email}</p>
-            <p className="text-gray-600">Phone: {order.phone}</p>
+        <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+          <div className="bg-gray-50 p-3 rounded-lg">
+            <h3 className="font-medium text-gray-700 text-sm sm:text-base">Customer Details</h3>
+            <p className="text-gray-600 text-sm sm:text-base">Name: {order.name}</p>
+            <p className="text-gray-600 text-sm sm:text-base">Email: {order.email}</p>
+            <p className="text-gray-600 text-sm sm:text-base">Phone: {order.phone}</p>
           </div>
-          <div>
-            <h3 className="font-medium text-gray-700">Payment Details</h3>
-            <p className="text-gray-600">Total: Rs. {order.totalPrice}</p>
-            <p className="text-gray-600">Method: {order.paymentMethod}</p>
-            <p className="text-gray-600">Date: {new Date(order.createdAt).toLocaleString()}</p>
+          <div className="bg-gray-50 p-3 rounded-lg">
+            <h3 className="font-medium text-gray-700 text-sm sm:text-base">Payment Details</h3>
+            <p className="text-gray-600 text-sm sm:text-base">Total: Rs.{order.totalPrice}</p>
+            <p className="text-gray-600 text-sm sm:text-base">Method: {order.paymentMethod}</p>
+            <p className="text-gray-600 text-sm sm:text-base">Date: {new Date(order.createdAt).toLocaleString()}</p>
           </div>
         </div>
 
-        <div className="mb-4">
-          <h3 className="font-medium text-gray-700">Shipping Address</h3>
-          <p className="text-gray-600">
+        <div className="mb-4 bg-gray-50 p-3 rounded-lg">
+          <h3 className="font-medium text-gray-700 text-sm sm:text-base">Shipping Address</h3>
+          <p className="text-gray-600 text-sm sm:text-base">
             {order.address.city}, {order.address.state}, {order.address.country}, {order.address.zipcode}
           </p>
         </div>
 
-        <div>
-          <h3 className="font-medium text-gray-700">Products ({order.productIds?.length || 0})</h3>
-          <ul className="mt-2 space-y-1">
-            {order.productIds?.map((product) => (
-              <li key={product._id} className="text-gray-600">
-                {product.title || product._id} (Rs. {product.price})
+        <div className="bg-gray-50 p-3 rounded-lg">
+          <h3 className="font-medium text-gray-700 text-sm sm:text-base">Products</h3>
+          <ul className="mt-1 space-y-1">
+            {order.productIds?.map((product, index) => (
+              <li key={product._id || product || index} className="text-gray-600 text-sm sm:text-base">
+                {typeof product === 'object' 
+                  ? `${product.title || 'Product'} (Qty: ${product.quantity || 1})`
+                  : `Product ID: ${product}`
+                }
               </li>
             ))}
           </ul>

@@ -1,4 +1,3 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 import Swal from "sweetalert2";
 
@@ -17,20 +16,22 @@ const cartSlice = createSlice({
       if (existingItem) {
         existingItem.quantity += 1;
         Swal.fire({
-          position: "top-end",
+          position: window.innerWidth < 768 ? "center" : "top-end",
           icon: "success",
           title: "Quantity increased!",
           showConfirmButton: false,
           timer: 1500,
+          width: window.innerWidth < 768 ? "80%" : undefined,
         });
       } else {
         state.cartItems.push({ ...action.payload, quantity: 1 });
         Swal.fire({
-          position: "top-end",
+          position: window.innerWidth < 768 ? "center" : "top-end",
           icon: "success",
-          title: "Product added to cart!",
+          title: "Added to cart!",
           showConfirmButton: false,
           timer: 1500,
+          width: window.innerWidth < 768 ? "80%" : undefined,
         });
       }
     },
@@ -39,21 +40,23 @@ const cartSlice = createSlice({
         (item) => item._id !== action.payload._id
       );
       Swal.fire({
-        position: "top-end",
+        position: window.innerWidth < 768 ? "center" : "top-end",
         icon: "success",
-        title: "Product removed from cart",
+        title: "Item removed",
         showConfirmButton: false,
         timer: 1500,
+        width: window.innerWidth < 768 ? "80%" : undefined,
       });
     },
     clearCart: (state) => {
       state.cartItems = [];
       Swal.fire({
-        position: "top-end",
+        position: window.innerWidth < 768 ? "center" : "top-end",
         icon: "success",
         title: "Cart cleared!",
         showConfirmButton: false,
         timer: 1500,
+        width: window.innerWidth < 768 ? "80%" : undefined,
       });
     },
     incrementQuantity: (state, action) => {
@@ -69,17 +72,27 @@ const cartSlice = createSlice({
       } else if (item && item.quantity === 1) {
         Swal.fire({
           title: "Remove item?",
-          text: "Decreasing further will remove the item from cart",
+          text: "This will remove the item from your cart",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Remove it!",
+          confirmButtonText: "Remove",
+          cancelButtonText: "Keep it",
+          width: window.innerWidth < 768 ? "80%" : undefined,
         }).then((result) => {
           if (result.isConfirmed) {
             state.cartItems = state.cartItems.filter(
               (cartItem) => cartItem._id !== action.payload
             );
+            Swal.fire({
+              position: window.innerWidth < 768 ? "center" : "top-end",
+              icon: "success",
+              title: "Item removed",
+              showConfirmButton: false,
+              timer: 1500,
+              width: window.innerWidth < 768 ? "80%" : undefined,
+            });
           }
         });
       }

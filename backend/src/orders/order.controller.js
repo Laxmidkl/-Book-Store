@@ -50,7 +50,6 @@ const getOrderByEmail = async (req, res) => {
  
 // this is for user detelte orders
 
-// Add this to your order controller
 const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -62,17 +61,6 @@ const deleteOrder = async (req, res) => {
     if (order.paymentStatus !== 'PENDING') {
       return res.status(400).json({ message: 'Only pending orders can be deleted' });
     }
-
-    // Soft delete
-//     await order.softDelete();
-    
-//     res.status(200).json({ message: 'Order deleted successfully' });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server error', error: error.message });
-//   }
-// };    yo thi kxa user dashboard lai
-
-
 
 
 await Order.findByIdAndDelete(req.params.id);
@@ -114,19 +102,37 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-
-
-const getOrderById = async (req, res) => {
+  const getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id)
+      .populate({
+        path: "productIds",
+        model: "Book",
+        select: "title price coverImage"
+      });
+
     if (!order) {
-      return res.status(404).json({ error: 'Order not found' });
+      return res.status(404).json({ message: "Order not found" });
     }
-    res.json(order);
+
+    res.status(200).json(order);
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error fetching order:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
+
+// const getOrderById = async (req, res) => {
+//   try {
+//     const order = await Order.findById(req.params.id);
+//     if (!order) {
+//       return res.status(404).json({ error: 'Order not found' });
+//     }
+//     res.json(order);
+//   } catch (error) {
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// };
 
 
 module.exports = {

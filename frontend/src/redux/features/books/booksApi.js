@@ -1,154 +1,86 @@
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import getBaseUrl from "../../../utils/baseURL";
-
-// const baseQuery = fetchBaseQuery({
-//   baseUrl: `${getBaseUrl()}/api/books`,
-//   credentials: "include",
-//   prepareHeaders: (headers) => {
-//     const token = localStorage.getItem("token");
-//     if (token) {
-//       headers.set("Authorization", `Bearer ${token}`);
-//     }
-//     return headers;
-//   },
-// });
-
-// const booksApi = createApi({
-//   reducerPath: "booksApi",
-//   baseQuery,
-//   tagTypes: ["Books"],
-//   endpoints: (builder) => ({
-//     fetchAllBooks: builder.query({
-//       query: () => "/",
-//       providesTags: ["Books"],
-//     }),
-//     fetchBookById: builder.query({
-//       query: (id) => `/${id}`,
-//       providesTags: (result, error, id) => [{ type: "Books", id }],
-//     }),
-//     addBook: builder.mutation({
-//       query: (newBook) => ({
-//         url: `/create-book`,
-//         method: "POST",
-//         body: newBook,
-//       }),
-//       invalidatesTags: ["Books"],
-//     }),
-//     updateBook: builder.mutation({
-//       query: ({ id, ...rest }) => ({
-//         url: `/edit/${id}`,
-//         method: "PUT",
-//         body: rest,
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }),
-//       invalidatesTags: ["Books"],
-//     }),
-//     deleteBook: builder.mutation({
-//       query: (id) => ({
-//         url: `/${id}`,
-//         method: "DELETE",
-//       }),
-//       invalidatesTags: ["Books"],
-//     }),
-//   }),
-// });
-
-// export const {
-//   useFetchAllBooksQuery,
-//   useFetchBookByIdQuery,
-//   useAddBookMutation,
-//   useUpdateBookMutation,
-//   useDeleteBookMutation,
-// } = booksApi;
-// export default booksApi;
-
-
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import getBaseUrl from '../../../utils/baseURL';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import getBaseUrl from "../../../utils/baseURL";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${getBaseUrl()}/api/books`,
-  credentials: 'include',
+  credentials: "include",
   prepareHeaders: (headers) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
+      headers.set("Authorization", `Bearer ${token}`);
     }
     return headers;
   },
 });
 
 const booksApi = createApi({
-  reducerPath: 'booksApi',
+  reducerPath: "booksApi",
   baseQuery,
-  tagTypes: ['Books'],
+  tagTypes: ["Books"],
   endpoints: (builder) => ({
     fetchAllBooks: builder.query({
-      query: () => '/',
-      providesTags: ['Books'],
+      query: () => "/",
+      providesTags: ["Books"],
     }),
     fetchBookById: builder.query({
       query: (id) => `/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Books', id }],
+      providesTags: (result, error, id) => [{ type: "Books", id }],
     }),
     addBook: builder.mutation({
       query: (newBook) => ({
-        url: '/create-book',
-        method: 'POST',
+        url: "/create-book",
+        method: "POST",
         body: newBook,
       }),
-      invalidatesTags: ['Books'],
+      invalidatesTags: ["Books"],
     }),
     updateBook: builder.mutation({
       query: ({ id, ...rest }) => ({
         url: `/edit/${id}`,
-        method: 'PUT',
+        method: "PUT",
         body: rest,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       }),
-      invalidatesTags: ['Books'],
+      invalidatesTags: ["Books"],
     }),
     deleteBook: builder.mutation({
       query: (id) => ({
         url: `/${id}`,
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
       }),
-      invalidatesTags: ['Books'],
+      invalidatesTags: ["Books"],
     }),
 
-
-
-addReview: builder.mutation({
+    addReview: builder.mutation({
       query: ({ id, ...reviewData }) => ({
         url: `/${id}/reviews`,
-        method: 'POST',
+        method: "POST",
         body: reviewData,
       }),
-      invalidatesTags: ['Books'],
+      invalidatesTags: ["Books"],
     }),
 
     likeBook: builder.mutation({
       query: ({ id, userId }) => ({
         url: `/${id}/like`,
-        method: 'POST',
+        method: "POST",
         body: { userId },
       }),
-      invalidatesTags: ['Books'],
+      invalidatesTags: ["Books"],
     }),
 
     trackBookView: builder.mutation({
       query: (id) => ({
         url: `/${id}/view`,
-        method: 'POST',
+        method: "POST",
       }),
     }),
 
     getRecommendedBooks: builder.query({
-      query: ({ id, category }) => `/${id}/recommendations?category=${category}`,
-      providesTags: ['Books'],
+      query: ({ id, category }) =>
+        `/${id}/recommendations?category=${category}`,
+      providesTags: ["Books"],
     }),
   }),
 });
@@ -166,9 +98,3 @@ export const {
 } = booksApi;
 
 export default booksApi;
-    
-    
-    
-  
-
-

@@ -6,6 +6,8 @@ import { jwtDecode } from "jwt-decode";
 
 import { HiOutlineHeart, HiOutlineShoppingCart } from "react-icons/hi2";
 import { IoSearchOutline } from "react-icons/io5";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { RxCross2 } from "react-icons/rx";
 import Img from "../assets/navLogo.png";
 import backgroundImage from "../assets/backgroundImg.jpg";
 
@@ -25,6 +27,7 @@ const Navbar = () => {
   const [query, setQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [adminData, setAdminData] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const { currentUser, logout } = useAuth();
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -100,12 +103,13 @@ const Navbar = () => {
   const profile = renderProfile();
   const isAdmin = profile?.isAdmin;
 
-  // Fetch books on mount
+  const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
+
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/books"); // your API endpoint
-        console.log("Books API response:", response.data);
+        const response = await axios.get("http://localhost:5000/api/books");
         setBooks(response.data.books || response.data);
       } catch (error) {
         console.error("Failed to fetch books", error);
@@ -114,10 +118,6 @@ const Navbar = () => {
     fetchBooks();
   }, []);
 
-  const [books, setBooks] = useState([]);
-  const [filteredBooks, setFilteredBooks] = useState([]);
-
-  // Filter books when query changes
   useEffect(() => {
     if (query.trim() === "") {
       setFilteredBooks([]);
@@ -135,148 +135,147 @@ const Navbar = () => {
 
   return (
     <header
-      className="max-w-screen-2xl mx-auto px-10 py-6 h-24 text-white"
+      className="max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-10 py-4 md:py-6 text-white fixed top-0 left-0 w-full z-50"
       style={{
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
       }}
     >
-      <nav className="flex justify-between items-center h-full">
-        <div className="flex items-center gap-6 md:gap-16">
-          <div className="h-14 w-14 flex items-center justify-center">
-            <img src={Img} alt="logo" className="rounded-full object-cover" />
-          </div>
+      <nav className="flex justify-between items-center h-full ">
+        <div className="flex items-center gap-4">
+          <img
+            src={Img}
+            alt="logo"
+            className="h-12 w-12 rounded-full object-cover"
+          />
+          <button
+            className="md:hidden text-white"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? (
+              <RxCross2 className="text-2xl" />
+            ) : (
+              <GiHamburgerMenu className="text-2xl" />
+            )}
+          </button>
+        </div>
 
-          <div className="hidden md:flex gap-10 font-semibold text-white">
-            <Link
-              to="/"
-              className="hover:text-primary transition-colors duration-200"
-            >
+        <div
+          className={`md:flex items-center gap-6 absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent text-black md:text-white shadow-md md:shadow-none transition-all duration-300 ease-in-out z-40 ${
+            menuOpen ? "block" : "hidden"
+          }`}
+        >
+          <div className="flex flex-col md:flex-row items-start md:items-center md:gap-24 gap-3 p-4 md:p-0">
+            <Link to="/" className="hover:text-primary">
               Home
             </Link>
-            <Link
-              to="/about"
-              className="hover:text-primary transition-colors duration-200"
-            >
+            <Link to="/about" className="hover:text-primary">
               About Us
             </Link>
-            <Link
-              to="/contact"
-              className="hover:text-primary transition-colors duration-200"
-            >
-              Contact Us
-            </Link>
-          </div>
+            <div className="relative w-full md:w-72">
+              <IoSearchOutline
+                onClick={handleSearch}
+                className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
+              />
+              <input
+                type="text"
+                placeholder="Search books..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="bg-white text-black w-full py-2 pl-8 pr-2 rounded-md outline-none"
+              />
 
-          <div className="relative sm:w-72 w-40 ml-2">
-            <IoSearchOutline
-              onClick={handleSearch}
-              className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-300 cursor-pointer"
-            />
-            <input
-              type="text"
-              placeholder="Search books..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="bg-white text-black w-full py-1 md:px-8 px-7 rounded-md outline-none pl-8 pr-2"
-            />
-
-            {filteredBooks.length > 0 && (
-              <ul className="absolute  mt-2  ">
-                {filteredBooks.map((book) => (
-                  <li key={book._id || book.id}>
-                    <Link
-                      to={`/books/${book._id || book.id}`}
-                      onClick={() => setQuery("")}
+              {filteredBooks.length > 0 && (
+                <ul className="absolute w-full z-50 mt-1 bg-black bg-opacity-80 text-white shadow-md rounded-md p-2">
+                  {filteredBooks.map((book) => (
+                    <li
+                      key={book._id || book.id}
+                      className="hover:bg-blue-700 rounded-md p-2 transition-colors"
                     >
-                      <div className="font-semibold">{book.title}</div>
-                      <div className="text-sm text-gray-600">
-                        by {book.author}
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
+                      <Link
+                        to={`/books/${book._id || book.id}`}
+                        onClick={() => setQuery("")}
+                        className="block"
+                      >
+                        <div className="font-semibold text-white">
+                          {book.title}
+                        </div>
+                        <div className="text-sm text-gray-300">
+                          by {book.author}
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="relative flex items-center gap-5 text-white">
-          <div className="relative">
-            {profile ? (
-              <>
-                <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex flex-col items-center focus:outline-none"
-                  aria-label="User menu"
-                >
-                  <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold select-none">
-                    {profile.initials}
-                  </div>
-                  <span className="text-xs mt-1 lowercase select-text max-w-[120px] truncate text-center">
-                    {profile.email}
-                  </span>
-                </button>
+        <div className="relative flex items-center gap-4 text-white">
+          {profile ? (
+            <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="focus:outline-none"
+              >
+                <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold">
+                  {profile.initials}
+                </div>
+                <span className="text-xs block mt-1 max-w-[100px] truncate text-center">
+                  {profile.email}
+                </span>
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
+                  <ul>
+                    {(isAdmin ? adminNavigation : userNavigation).map(
+                      (item) => (
+                        <li key={item.name}>
+                          <Link
+                            to={item.href}
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="block px-4 py-2 hover:bg-gray-100"
+                          >
+                            {item.name}
+                          </Link>
+                        </li>
+                      )
+                    )}
+                    <li>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Link to="/login" className="font-semibold hover:text-primary">
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="ml-2 font-semibold hover:text-primary"
+              >
+                Register
+              </Link>
+            </>
+          )}
 
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-3 w-48 bg-white rounded-md shadow-lg text-black z-50">
-                    <ul>
-                      {(isAdmin ? adminNavigation : userNavigation).map(
-                        (item) => (
-                          <li key={item.name}>
-                            <Link
-                              to={item.href}
-                              onClick={() => setIsDropdownOpen(false)}
-                              className="block px-4 py-2 hover:bg-gray-200"
-                            >
-                              {item.name}
-                            </Link>
-                          </li>
-                        )
-                      )}
-                      <li>
-                        <button
-                          onClick={handleLogout}
-                          className="w-full text-left px-4 py-2 hover:bg-gray-200"
-                        >
-                          Logout
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="text-white font-semibold hover:text-primary transition-colors duration-200"
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="ml-4 text-white font-semibold hover:text-primary transition-colors duration-200"
-                >
-                  Register
-                </Link>
-              </>
-            )}
-          </div>
-
-          <button
-            title="Wishlist"
-            className="hidden sm:block hover:text-primary transition-colors duration-200"
-            aria-label="Wishlist"
-          >
+          <button className="hidden sm:block hover:text-primary">
             <HiOutlineHeart className="w-6 h-6" />
           </button>
 
           <Link
             to="/cart"
-            className="bg-primary p-2 flex items-center rounded-md hover:bg-blue-700 transition-colors duration-200 relative"
-            aria-label="Cart"
+            className="bg-primary p-2 flex items-center rounded-md hover:bg-blue-700 relative"
           >
             <HiOutlineShoppingCart className="w-6 h-6" />
             {cartItems.length > 0 && (
